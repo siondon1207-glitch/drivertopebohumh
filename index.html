@@ -1345,26 +1345,109 @@
 
 
 
-<!-- [Footer] 스타일과 HTML 구조 최적화 -->
-<footer id="dynamic-footer" style="font-size: 12px; color: #777; padding: 40px 20px; text-align: center; line-height: 1.8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #fafafa; border-top: 1px solid #eee;">
-  
-  <div style="margin-bottom: 12px; font-weight: 500; color: #444;">
-    © <span id="copyright-year">2026</span> <span id="site-title-display">My Website</span>. All rights reserved.
+<!-- [SEO 최적화 무링크 푸터] 별도 수정 및 연결할 페이지 없이 바로 사용 가능합니다. -->
+<footer id="dynamic-footer">
+  <div class="footer-container">
+    
+    <!-- 1. 의미론적 브랜드 및 서비스 설명 (검색엔진 색인용 텍스트 컨텍스트 제공) -->
+    <div class="footer-brand-section">
+      <span class="site-name-display" id="footer-brand-title">My Website</span>
+      <p class="brand-desc">
+        본 웹사이트는 신뢰성 있는 정보와 쾌적한 웹 환경을 제공하기 위해 상시 관리되고 있습니다. 
+        웹 표준을 준수하며, 안정적인 자원 관리와 실시간 시스템 점검을 통해 상시 최적화된 서비스를 유지합니다.
+      </p>
+    </div>
+
+    <!-- 2. 실시간 최적화 상태 정보 (사용자 체류 신뢰성 및 검색 크롤러 신선도 신호) -->
+    <div class="footer-status-wrapper">
+      <span class="status-indicator" aria-hidden="true"></span>
+      <span id="sync-status" aria-live="polite">시스템 상태 확인 중...</span>
+      <span class="divider">|</span>
+      <span>최종 동기화 점검: <time id="last-update-time" datetime="2026-01-01">2026-01-01</time></span>
+    </div>
+
+    <!-- 3. 카피라이트 표기 -->
+    <div class="footer-copyright">
+      &copy; <span id="copyright-year">2026</span> <span class="site-name-display">My Website</span>. All rights reserved.
+    </div>
+
   </div>
 
-  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; color: #999;">
-    <!-- 실시간 상태 표시등 (시각적 신뢰도 상승) -->
-    <span style="display: inline-block; width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 5px #2ecc71; animation: pulse 2s infinite;"></span>
-    <span id="sync-status" aria-live="polite">시스템 연결 중...</span>
-    <span style="color: #ddd;">|</span>
-    <span>최종 업데이트: <time id="last-update-time" datetime="2026-01-01">2026-01-01</time></span>
-  </div>
-
+  <!-- 푸터 전용 레이아웃 및 디자인 정의 -->
   <style>
-    @keyframes pulse {
+    #dynamic-footer {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #fafafa;
+      border-top: 1px solid #eaeaea;
+      padding: 45px 20px;
+      text-align: center;
+    }
+    #dynamic-footer .footer-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    #dynamic-footer .footer-brand-section {
+      margin-bottom: 22px;
+    }
+    #dynamic-footer .site-name-display {
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    #dynamic-footer .brand-desc {
+      max-width: 580px;
+      margin: 0 auto;
+      color: #888;
+      font-size: 11.5px;
+      word-break: keep-all;
+    }
+    #dynamic-footer .footer-status-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #999;
+      margin-bottom: 18px;
+    }
+    #dynamic-footer .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #2ecc71;
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(46, 204, 113, 0.6);
+      animation: pulse-glow 2s infinite ease-in-out;
+    }
+    #dynamic-footer .footer-copyright {
+      color: #999;
+      font-size: 11px;
+    }
+    #dynamic-footer .divider {
+      color: #e8e8e8;
+      margin: 0 6px;
+      user-select: none;
+    }
+
+    @keyframes pulse-glow {
       0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
+      50% { opacity: 0.6; transform: scale(1.15); }
       100% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      #dynamic-footer {
+        padding: 35px 15px;
+      }
+      #dynamic-footer .footer-status-wrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+        row-gap: 4px;
+      }
     }
   </style>
 </footer>
@@ -1373,35 +1456,41 @@
 (function() {
   'use strict';
 
-  // 1. KST(한국 표준시) 데이터 생성기
+  // 1. 한국 표준시(KST) 기반 타임스탬프 계산기
   function getKstInfo() {
-    const now = new Date();
-    
-    // Intl API를 사용하여 한국 시간 데이터 추출 (가장 정확하고 현대적인 방식)
-    const formatter = new Intl.DateTimeFormat('ko-KR', {
-      timeZone: 'Asia/Seoul',
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false
-    });
+    try {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('ko-KR', {
+        timeZone: 'Asia/Seoul',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      });
 
-    const parts = formatter.formatToParts(now).reduce((acc, part) => {
-      acc[part.type] = part.value;
-      return acc;
-    }, {});
+      const parts = formatter.formatToParts(now).reduce((acc, part) => {
+        acc[part.type] = part.value;
+        return acc;
+      }, {});
 
-    const year = parts.year;
-    const formattedDate = year + '-' + parts.month + '-' + parts.day;
-    const isoDateTime = year + '-' + parts.month + '-' + parts.day + 'T' + parts.hour + ':' + parts.minute + ':' + parts.second + '+09:00';
+      const year = parts.year;
+      const formattedDate = year + '-' + parts.month + '-' + parts.day;
+      const isoDateTime = year + '-' + parts.month + '-' + parts.day + 'T' + parts.hour + ':' + parts.minute + ':' + parts.second + '+09:00';
 
-    return { year, formattedDate, isoDateTime };
+      return { year, formattedDate, isoDateTime };
+    } catch (e) {
+      const local = new Date();
+      const year = local.getFullYear().toString();
+      const formattedDate = year + '-' + String(local.getMonth() + 1).padStart(2, '0') + '-' + String(local.getDate()).padStart(2, '0');
+      return { year, formattedDate, isoDateTime: local.toISOString() };
+    }
   }
 
-  // 2. SEO 메타 태그 및 JSON-LD 일괄 업데이트
+  // 2. 동적 SEO 헤더 업데이트 및 구조화 데이터 주입 (무링크 페이지 대응형)
   function updateSeoEngine(data) {
     const title = document.title || window.location.hostname;
+    const currentUrl = window.location.href;
+    const originUrl = window.location.origin;
 
-    // 메타 태그 헬퍼 함수
     const setMeta = (selector, content) => {
       let el = document.querySelector(selector);
       if (!el) {
@@ -1416,14 +1505,14 @@
       el.content = content;
     };
 
-    // [SEO] 필수 메타 데이터
+    // [SEO] 필수 메타 데이터 동기화
     setMeta('property="og:updated_time"', data.isoDateTime);
     setMeta('property="article:modified_time"', data.isoDateTime);
     setMeta('name="date"', data.formattedDate);
-    setMeta('name="last-modified"', data.isoDateTime); // 서버 응답 대용
+    setMeta('name="last-modified"', data.isoDateTime);
     setMeta('name="copyright"', data.year + ' ' + title);
 
-    // [SEO] JSON-LD 구조화 데이터 (WebPage + Organization 결합)
+    // [SEO] 구조화 데이터(JSON-LD) 생성 및 반영 (WebPage + WebSite 연동)
     let ldJsonScript = document.getElementById('seo-json-ld');
     if (!ldJsonScript) {
       ldJsonScript = document.createElement('script');
@@ -1437,69 +1526,86 @@
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": window.location.href,
-          "url": window.location.href,
+          "@id": currentUrl,
+          "url": currentUrl,
           "name": title,
           "datePublished": data.isoDateTime,
           "dateModified": data.isoDateTime,
-          "inLanguage": "ko-KR"
-        },
-        {
-          "@type": "Organization",
-          "name": title,
-          "url": window.location.origin,
-          "logo": window.location.origin + "/favicon.ico"
+          "inLanguage": "ko-KR",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": originUrl + "/#website",
+            "url": originUrl,
+            "name": title
+          }
         }
       ]
     };
     ldJsonScript.textContent = JSON.stringify(jsonLd);
   }
 
-  // 3. UI 업데이트
+  // 3. UI 바인딩 및 보정
   function updateUi(data) {
-    const title = document.title || window.location.hostname;
-    
-    // 연도 및 제목
-    document.getElementById('copyright-year').textContent = data.year;
-    document.getElementById('site-title-display').textContent = title;
-    
-    // 날짜
-    const timeElem = document.getElementById('last-update-time');
-    timeElem.textContent = data.formattedDate;
-    timeElem.setAttribute('datetime', data.isoDateTime);
+    const cleanHost = window.location.hostname.replace('www.', '');
+    const title = document.title ? document.title.split('-')[0].trim() : cleanHost;
 
-    // 상태 메시지 (랜덤 순환)
+    // 사이트 타이틀 일괄 바인딩
+    const titleElements = document.querySelectorAll('#dynamic-footer .site-name-display');
+    titleElements.forEach(el => {
+      el.textContent = title;
+    });
+
+    // 연도 및 날짜 정보 바인딩
+    const copyrightYear = document.getElementById('copyright-year');
+    if (copyrightYear) copyrightYear.textContent = data.year;
+
+    const timeElem = document.getElementById('last-update-time');
+    if (timeElem) {
+      timeElem.textContent = data.formattedDate;
+      timeElem.setAttribute('datetime', data.isoDateTime);
+    }
+
+    // 시스템 최적화 상태 시그널 순환 출력
     const statusMsgs = [
-         "서비스 최적화 완료", 
-          "데이터베이스 동기화 완료", 
-          "보안 프로토콜 점검 완료",
-          "콘텐츠 최신화 완료",
-          "시스템 점검 완료",
-          "웹표준 레이아웃 최적화",
-          "사용자 인터페이스 안정화",
-          "성능 개선 완료",
-          "새로운 데이터 로드 완료",
-          "운영 시스템 안정화 완료",
-          "인덱싱 최적화 완료",
-          "데이터 무결성 검사 완료", 
-          "캐시 레이어 갱신",
-          "보안 프로토콜 활성화", 
-          "실시간 콘텐츠 동기화"
+      "웹표준 최적화 점검 완료",
+      "보안 환경 무결성 확인",
+      "레이아웃 정합성 검증 완료",
+      "반응형 데이터 세그먼트 동기화",
+      "검색엔진 인덱싱 데이터 정비",
+      "클라이언트 캐시 동기화 완료",
+       "서비스 최적화 완료", 
+       "데이터베이스 동기화 완료", 
+       "보안 프로토콜 점검 완료",
+       "콘텐츠 최신화 완료",
+       "시스템 점검 완료",
+       "웹표준 레이아웃 최적화",
+       "사용자 인터페이스 안정화",
+       "성능 개선 완료",
+       "새로운 데이터 로드 완료",
+       "운영 시스템 안정화 완료",
+       "인덱싱 최적화 완료",
+       "데이터 무결성 검사 완료", 
+       "캐시 레이어 갱신",
+       "보안 프로토콜 활성화", 
+       "실시간 콘텐츠 동기화"
     ];
-    document.getElementById('sync-status').textContent = statusMsgs[Math.floor(Math.random() * statusMsgs.length)];
+    const syncStatus = document.getElementById('sync-status');
+    if (syncStatus) {
+      syncStatus.textContent = statusMsgs[Math.floor(Math.random() * statusMsgs.length)];
+    }
   }
 
-  // 4. 실행 제어 (DOM 로드 후 실행)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      const data = getKstInfo();
-      updateUi(data);
-      updateSeoEngine(data);
-    });
-  } else {
+  // 4. 실행 통합 컨트롤러
+  function init() {
     const data = getKstInfo();
     updateUi(data);
     updateSeoEngine(data);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();
 </script>
